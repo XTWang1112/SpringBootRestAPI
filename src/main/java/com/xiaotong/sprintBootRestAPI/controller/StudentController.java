@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("students")
 public class StudentController {
     @GetMapping("student")
     public ResponseEntity<Student> getStudent(){
@@ -19,7 +20,7 @@ public class StudentController {
         return ResponseEntity.ok().header("custom_header","xiaotong").body(student);
     }
 
-    @GetMapping("students")
+    @GetMapping
     public ResponseEntity<List<Student>>getStudents(){
         List<Student> students = new ArrayList<>();
         students.add(new Student(1, "Xiaotong", "Wang"));
@@ -30,7 +31,7 @@ public class StudentController {
     }
 
     //spring boot REST API with path variable
-    @GetMapping("students/{id}/{first-name}/{last-name}")
+    @GetMapping("{id}/{first-name}/{last-name}")
     public Student studentPathVariable(@PathVariable("id") Integer studentId,
                                        @PathVariable("first-name") String firstName,
                                        @PathVariable("last-name") String lastName){
@@ -39,7 +40,7 @@ public class StudentController {
 
     //spring boot REST API with request param
     //http://localhost:8080/students/query?id=1&firstName=Xiaotong&lastName=Wang
-    @GetMapping("students/query")
+    @GetMapping("query")
     public Student studentRequestVariable(@RequestParam int id,
                                           @RequestParam String firstName,
                                           @RequestParam String lastName){
@@ -47,7 +48,7 @@ public class StudentController {
     }
 
     //Post request
-    @PostMapping("students/create")
+    @PostMapping("create")
     //@ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         System.out.println(student.getId());
@@ -57,7 +58,7 @@ public class StudentController {
     }
 
     //PUT request
-    @PutMapping("students/{id}/update")
+    @PutMapping("{id}/update")
     public Student updateStudent(@RequestBody Student student, @PathVariable int id){
         System.out.println(student.getFirstName());
         System.out.println(student.getLastName());
@@ -65,7 +66,7 @@ public class StudentController {
     }
 
     //DELETE request
-    @DeleteMapping("students/{id}/delete")
+    @DeleteMapping("{id}/delete")
     public String deleteStudent(@PathVariable("id") int studentID){
         return "Student is deleted successfully";
     }
