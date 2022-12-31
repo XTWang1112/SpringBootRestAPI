@@ -2,6 +2,7 @@ package com.xiaotong.sprintBootRestAPI.controller;
 
 import com.xiaotong.sprintBootRestAPI.bean.Student;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -10,21 +11,22 @@ import java.util.List;
 @RestController
 public class StudentController {
     @GetMapping("student")
-    public Student getStudent(){
+    public ResponseEntity<Student> getStudent(){
         Student student = new Student(
                 1, "Xiaotong","Wang"
         );
-        return student;
+//        return new ResponseEntity<>(student, HttpStatus.OK);
+        return ResponseEntity.ok().header("custom_header","xiaotong").body(student);
     }
 
     @GetMapping("students")
-    public List<Student> getStudents(){
+    public ResponseEntity<List<Student>>getStudents(){
         List<Student> students = new ArrayList<>();
         students.add(new Student(1, "Xiaotong", "Wang"));
         students.add(new Student(2, "Yuchen", "Zheng"));
         students.add(new Student(3, "Dawang", "Zheng"));
         students.add(new Student(4, "Balala", "Nengliang"));
-        return students;
+        return ResponseEntity.ok(students);
     }
 
     //spring boot REST API with path variable
@@ -46,12 +48,12 @@ public class StudentController {
 
     //Post request
     @PostMapping("students/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Student createStudent(@RequestBody Student student){
+    //@ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Student> createStudent(@RequestBody Student student){
         System.out.println(student.getId());
         System.out.println(student.getFirstName());
         System.out.println(student.getLastName());
-        return student;
+        return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
     //PUT request
